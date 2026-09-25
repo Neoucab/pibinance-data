@@ -1,6 +1,6 @@
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 
 def get_bcv():
@@ -59,7 +59,7 @@ def main():
     if binance_price:
         rates['binance_usdt'] = binance_price
         
-    rates['updated_at'] = datetime.now().isoformat()
+    rates['updated_at'] = datetime.now(timezone.utc).isoformat()
     
     with open('data.json', 'w') as f:
         json.dump(rates, f, indent=4)
