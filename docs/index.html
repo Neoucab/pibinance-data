@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#060708">
+<title>Ndolar — Tasas BCV y Binance</title>
+<meta name="description" content="Descarga Ndolar: tasas BCV y Binance P2P actualizadas cada hora, conversor Bs/USD/EUR/USDT.">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    background:#060708; color:#F2F4F5;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:32px 18px 48px;
+  }
+  .wrap { width:100%; max-width:420px; }
+  .logo {
+    width:56px; height:56px; margin:0 auto 14px; border-radius:16px;
+    background:#0B0F0E; border:1.5px solid #10E664;
+    display:flex; align-items:center; justify-content:center;
+    font-size:30px; font-weight:800; color:#10E664;
+  }
+  h1 { text-align:center; font-size:26px; letter-spacing:6px; font-weight:800; }
+  .tag {
+    text-align:center; color:#9BA3AB; font-size:12.5px; margin:8px 0 22px; line-height:1.55;
+  }
+  .btn {
+    display:block; width:100%; text-align:center; text-decoration:none;
+    background:#10E664; color:#000; font-weight:800; font-size:16px;
+    padding:16px; border-radius:14px; letter-spacing:0.5px;
+  }
+  .btn small { display:block; font-weight:600; font-size:10.5px; letter-spacing:1.5px; opacity:.75; margin-top:2px; }
+  .downloading {
+    display:none; text-align:center; color:#10E664; font-size:13px; font-weight:700;
+    margin:-6px 0 14px;
+  }
+  .downloading.show { display:block; }
+  .steps { margin-top:26px; }
+  .steps h2 {
+    font-size:11px; letter-spacing:2.5px; color:#9BA3AB; font-weight:700; margin-bottom:12px;
+  }
+  .step {
+    display:flex; gap:12px; align-items:flex-start;
+    background:#121417; border:1px solid rgba(255,255,255,.08);
+    border-radius:13px; padding:13px 14px; margin-bottom:8px;
+  }
+  .num {
+    flex:0 0 26px; width:26px; height:26px; border-radius:8px;
+    background:rgba(16,230,100,.1); border:1px solid #10E664;
+    color:#10E664; font-weight:800; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step p { font-size:13px; line-height:1.5; color:#E7EAEC; }
+  .step p b { color:#10E664; }
+  .step p .warn { color:#FF5C5C; font-weight:700; }
+  .note {
+    margin-top:16px; text-align:center; color:#9BA3AB; font-size:11.5px; line-height:1.6;
+  }
+  .ver { text-align:center; color:#9BA3AB; font-size:11px; margin-top:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">N</div>
+  <h1>NDOLAR</h1>
+  <p class="tag">Tasas BCV y Binance P2P actualizadas cada hora,<br>conversor Bs · USD · EUR · USDT</p>
+
+  <a class="btn" id="dl" href="https://github.com/Neoucab/pibinance-data/releases/latest/download/Ndolar.apk">
+    DESCARGAR NDOLAR
+    <small>GRATIS · ANDROID</small>
+  </a>
+  <p class="downloading" id="dlmsg">⬇ Descargando… cuando termine, toca el aviso de Chrome</p>
+
+  <div class="steps">
+    <h2>CÓMO INSTALAR (SOLO LA PRIMERA VEZ)</h2>
+    <div class="step"><div class="num">1</div><p>La descarga empieza sola. Si no, toca el botón verde de arriba.</p></div>
+    <div class="step"><div class="num">2</div><p>Al terminar, <b>baja la barra de notificaciones</b> y toca el archivo <b>Ndolar.apk</b> ahí mismo. <span class="warn">No vayas a "Archivos"</span>, es más fácil desde la notificación.</p></div>
+    <div class="step"><div class="num">3</div><p>El teléfono preguntará si permites instalar: toca <b>Permitir</b> o <b>Permitir de todas formas</b>. Es normal, la app no está en Play Store.</p></div>
+    <div class="step"><div class="num">4</div><p>Toca <b>Instalar</b> → <b>Abrir</b>. ¡Listo! Ndolar queda en tus apps.</p></div>
+  </div>
+
+  <p class="note">Después de esta primera instalación, las próximas actualizaciones<br>llegan <b style="color:#10E664">solas dentro de la app</b>: solo toca ACTUALIZAR.</p>
+  <p class="ver" id="ver"></p>
+</div>
+
+<script>
+  var APK = 'https://github.com/Neoucab/pibinance-data/releases/latest/download/Ndolar.apk';
+  // Auto-descarga en Android al entrar (la página ya quedó abierta con la guía)
+  if (/Android/i.test(navigator.userAgent)) {
+    var msg = document.getElementById('dlmsg');
+    setTimeout(function () {
+      msg.classList.add('show');
+      location.href = APK;
+    }, 1200);
+    // Por si el navegador bloquea la redirección automática
+    document.getElementById('dl').addEventListener('click', function(){ msg.classList.add('show'); });
+  }
+  // Muestra la última versión publicada (anónimo, falla en silencio)
+  fetch('https://api.github.com/repos/Neoucab/pibinance-data/releases/latest')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){ if (d && d.tag_name) document.getElementById('ver').textContent = 'Última versión: ' + d.tag_name; })
+    .catch(function(){});
+</script>
+</body>
+</html>
