@@ -2,7 +2,10 @@ name: Update Rates
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # Corridas horarias (minuto 15): Binance P2P siempre; BCV entre mar-vie.
+    # Sáb/dom/lun la tasa BCV no cambia: el scraper la actualiza una sola vez
+    # alrededor de 04:15 UTC (00:15 Venezuela, publicación diaria del BCV).
+    - cron: '15 * * * *'
   workflow_dispatch:
 
 permissions:
