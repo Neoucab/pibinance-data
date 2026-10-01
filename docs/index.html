@@ -3,74 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#060708">
-<title>Ndolar — Tasas BCV y Binance</title>
-<meta name="description" content="Descarga Ndolar: tasas BCV y Binance P2P actualizadas cada hora, conversor Bs/USD/EUR/USDT.">
+<meta name="theme-color" content="#070B09">
+<title>Ndolar — Tasas BCV y Binance P2P</title>
+<meta name="description" content="Descarga Ndolar gratis: tasa BCV USD y Binance P2P actualizadas cada hora, con conversor. Sin publicidad y sin cuentas.">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
-    background:#060708; color:#F2F4F5;
+    background:#070B09; color:#E7EAEC;
     min-height:100vh; display:flex; flex-direction:column; align-items:center;
     padding:32px 18px 48px;
   }
   .wrap { width:100%; max-width:420px; }
   .logo {
     width:56px; height:56px; margin:0 auto 14px; border-radius:16px;
-    background:#0B0F0E; border:1.5px solid #10E664;
+    background:rgba(255,255,255,.06); border:1.5px solid #22E07A;
     display:flex; align-items:center; justify-content:center;
-    font-size:30px; font-weight:800; color:#10E664;
+    font-size:28px; font-weight:800; color:#22E07A;
   }
-  h1 { text-align:center; font-size:26px; letter-spacing:6px; font-weight:800; }
+  h1 { text-align:center; font-size:26px; letter-spacing:6px; font-weight:800; color:#F2F5F3; }
   .tag {
-    text-align:center; color:#9BA3AB; font-size:12.5px; margin:8px 0 22px; line-height:1.55;
+    text-align:center; color:#98A59E; font-size:12.5px; margin:8px 0 22px; line-height:1.55;
   }
   .btn {
     display:block; width:100%; text-align:center; text-decoration:none;
-    background:#10E664; color:#000; font-weight:800; font-size:16px;
-    padding:16px; border-radius:14px; letter-spacing:0.5px;
+    background:#22E07A; color:#04130C; font-weight:800; font-size:16px;
+    padding:16px; border-radius:14px; letter-spacing:.5px;
   }
   .btn small { display:block; font-weight:600; font-size:10.5px; letter-spacing:1.5px; opacity:.75; margin-top:2px; }
   .downloading {
-    display:none; text-align:center; color:#10E664; font-size:13px; font-weight:700;
+    display:none; text-align:center; color:#22E07A; font-size:13px; font-weight:700;
     margin:-6px 0 14px;
   }
   .downloading.show { display:block; }
   .steps { margin-top:26px; }
-  .steps h2 {
-    font-size:11px; letter-spacing:2.5px; color:#9BA3AB; font-weight:700; margin-bottom:12px;
-  }
+  .steps h2 { font-size:11px; letter-spacing:2.5px; color:#98A59E; font-weight:700; margin-bottom:12px; }
   .step {
     display:flex; gap:12px; align-items:flex-start;
-    background:#121417; border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
     border-radius:13px; padding:13px 14px; margin-bottom:8px;
   }
   .num {
     flex:0 0 26px; width:26px; height:26px; border-radius:8px;
-    background:rgba(16,230,100,.1); border:1px solid #10E664;
-    color:#10E664; font-weight:800; font-size:13px;
+    background:rgba(34,224,122,.1); border:1px solid #22E07A;
+    color:#22E07A; font-weight:800; font-size:13px;
     display:flex; align-items:center; justify-content:center;
   }
   .step p { font-size:13px; line-height:1.5; color:#E7EAEC; }
-  .step p b { color:#10E664; }
-  .step p .warn { color:#FF5C5C; font-weight:700; }
-  .note {
-    margin-top:16px; text-align:center; color:#9BA3AB; font-size:11.5px; line-height:1.6;
+  .step p b { color:#22E07A; }
+  .step p .warn { color:#FF6B6B; font-weight:700; }
+  .feats { margin-top:22px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .feat {
+    font-size:11.5px; color:#C9D2CC; background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08); border-radius:999px; padding:6px 12px;
   }
-  .ver { text-align:center; color:#9BA3AB; font-size:11px; margin-top:18px; }
+  .note { margin-top:18px; text-align:center; color:#98A59E; font-size:11.5px; line-height:1.6; }
+  .ver { text-align:center; color:#98A59E; font-size:11px; margin-top:14px; }
+  footer { margin-top:26px; text-align:center; font-size:11.5px; color:#98A59E; line-height:1.7; }
+  footer a { color:#22E07A; text-decoration:none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="logo">N</div>
+  <div class="logo">$</div>
   <h1>NDOLAR</h1>
-  <p class="tag">Tasas BCV y Binance P2P actualizadas cada hora,<br>conversor Bs · USD · EUR · USDT</p>
+  <p class="tag">Tasa BCV y Binance P2P actualizadas cada hora,<br>con conversor Bs · BCV USD · USDT</p>
 
   <a class="btn" id="dl" href="https://github.com/Neoucab/pibinance-data/releases/latest/download/Ndolar.apk">
     DESCARGAR NDOLAR
-    <small>GRATIS · ANDROID</small>
+    <small>GRATIS · SIN PUBLICIDAD</small>
   </a>
   <p class="downloading" id="dlmsg">⬇ Descargando… cuando termine, toca el aviso de Chrome</p>
+
+  <div class="feats">
+    <span class="feat">Sin cuentas</span>
+    <span class="feat">Sin publicidad</span>
+    <span class="feat">Modo claro y oscuro</span>
+    <span class="feat">Funciona sin conexión</span>
+  </div>
 
   <div class="steps">
     <h2>CÓMO INSTALAR (SOLO LA PRIMERA VEZ)</h2>
@@ -80,27 +90,31 @@
     <div class="step"><div class="num">4</div><p>Toca <b>Instalar</b> → <b>Abrir</b>. ¡Listo! Ndolar queda en tus apps.</p></div>
   </div>
 
-  <p class="note">Después de esta primera instalación, las próximas actualizaciones<br>llegan <b style="color:#10E664">solas dentro de la app</b>: solo toca ACTUALIZAR.</p>
+  <p class="note">Después de esta primera instalación, las próximas actualizaciones<br>llegan <b style="color:#22E07A">solas dentro de la app</b>: solo toca ACTUALIZAR.</p>
   <p class="ver" id="ver"></p>
+
+  <footer>
+    <a href="./privacidad.html">Privacidad</a> · Ndolar muestra tasas de fuentes
+    públicas. No está afiliada al BCV ni a Binance.<br>
+    No asesora financiera ni realiza intermediación.
+  </footer>
 </div>
 
 <script>
   var APK = 'https://github.com/Neoucab/pibinance-data/releases/latest/download/Ndolar.apk';
-  // Auto-descarga en Android al entrar (la página ya quedó abierta con la guía)
+  // Auto-descarga en Android al entrar (la página ya queda abierta con la guía)
   if (/Android/i.test(navigator.userAgent)) {
     var msg = document.getElementById('dlmsg');
     setTimeout(function () {
       msg.classList.add('show');
       location.href = APK;
     }, 1200);
-    // Por si el navegador bloquea la redirección automática
     document.getElementById('dl').addEventListener('click', function(){ msg.classList.add('show'); });
   }
-  // Muestra la última versión publicada (anónimo, falla en silencio)
-  fetch('https://api.github.com/repos/Neoucab/pibinance-data/releases/latest')
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(d){ if (d && d.tag_name) document.getElementById('ver').textContent = 'Última versión: ' + d.tag_name; })
-    .catch(function(){});
+  // NO se consulta la API de releases desde aquí a propósito: la app usa esa
+  // misma cuota anónima (60 req/h por IP) para detectar actualizaciones, y
+  // cada visita a esta página se la gastaría al usuario. El botón siempre
+  // apunta a /releases/latest, así que no hace falta mostrar el número.
 </script>
 </body>
 </html>
