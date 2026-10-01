@@ -10,9 +10,11 @@ Salida:
   binance_history.json  — historial corto para la referencia de 24 h
 
 Seguridad:
-  - TLS verificado (verify=True). El certificado del BCV es un DV público
-    válido (Sectigo), no hay razón para desactivarlo: con verify=False una
-    respuesta manipitada se convertiría en tasas falsas para todos.
+  - TLS verificado. El BCV sirve una cadena incompleta (no envía el
+    intermedio Sectigo), así que se construye un bundle certifi +
+    certs/sectigo-dv-r36.pem y se verifica contra él. Antes se usaba
+    verify=False, que abría la puerta a que una respuesta manipulada se
+    publicara como tasa para todos los usuarios.
   - Rango sanity en cada tasa: un valor absurdo se descarta y se conserva el
     último valor bueno, en lugar de publicarse.
 """
