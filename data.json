@@ -1,10 +1,10 @@
 {
-    "bcv_usd": 880.1159,
-    "bcv_eur": 985.729808,
-    "binance_usdt": 995.699,
-    "updated_at": "2026-10-16T13:26:08.526087-04:00",
-    "bcv_usd_previous_value": 879.1225,
-    "bcv_usd_previous_at": "2026-10-15",
-    "binance_usdt_ref_24h_value": 1006.5157999999999,
-    "binance_usdt_ref_24h_at": "2026-10-15T14:19:18.674071-04:00"
+    "bcv_usd": 881.0664,
+    "bcv_eur": 991.16445734,
+    "binance_usdt": 994.9056,
+    "updated_at": "2026-10-16T17:11:33.981706-04:00",
+    "bcv_usd_previous_value": 880.1159,
+    "bcv_usd_previous_at": "2026-10-16",
+    "binance_usdt_ref_24h_value": 1007.14,
+    "binance_usdt_ref_24h_at": "2026-10-15T18:21:20.311616-04:00"
 }
