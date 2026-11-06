@@ -2,7 +2,11 @@ name: Update Rates
 
 on:
   schedule:
-    # Corridas horarias (minuto 15): Binance P2P siempre; BCV entre mar-vie.
+    # Respaldo, no camino principal: GitHub descarta la mayoría de los eventos
+    # `schedule` en repos públicos (medido: ~4,8 corridas/día en vez de 24, con
+    # huecos de hasta 9,8 h). El disparo real lo hace un reloj externo gratuito
+    # (Google Apps Script) con `workflow_dispatch` cada hora.
+    # Binance P2P siempre; BCV entre mar-vie.
     # Sáb/dom/lun la tasa BCV no cambia: el scraper la actualiza una sola vez
     # alrededor de las 00:15 Venezuela (publicación diaria del BCV).
     - cron: '15 * * * *'

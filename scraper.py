@@ -75,6 +75,14 @@ BINANCE_URL = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
 MIN_RATE = 1.0
 MAX_RATE = 1_000_000.0
 
+# Tolerancia de la referencia de 24 h: se acepta el punto del historial más
+# cercano a 24 h atrás si no se aleja más de esto. El cron pretende correr
+# cada hora, pero GitHub Actions descarta la mayoría de los eventos
+# `schedule` (medido: ~5 h entre corridas, máximo 9,8 h), así que con 3 h el
+# campo `binance_usdt_ref_24h_value` desaparecía casi siempre y la app perdía
+# la variación de Binance. 6 h sobrevive al hueco real.
+REF24H_TOLERANCE = timedelta(hours=6)
+
 CA_BUNDLE = ca_bundle()
 
 
@@ -96,6 +104,23 @@ def is_bcv_frozen_day(now_caracas):
     return now_caracas.weekday() in (5, 6, 0) and now_caracas.hour != 0
 
 
+def parse_bcv_number(text):
+    """Convierte el texto de una tasa del BCV a float.
+
+    El BCV publica en formato es-VE: miles con punto y decimales con coma.
+    Cuando el euro pasó de 1.000 publicó '1.004,95657762'; el
+    `replace(",", ".")` de antes lo dejaba en '1.004.95657762' y `float()`
+    fallaba. Como el fallo abortaba `get_bcv()` entero, **las dos** tasas se
+    descartaban y el feed quedaba congelado (pasó del 3-nov al 6-nov-2026).
+    """
+    s = str(text).strip().replace("\xa0", "").replace(" ", "")
+    if "," in s:
+        # Formato es-VE: los puntos son separador de miles.
+        s = s.replace(".", "").replace(",", ".")
+    # Sin coma, el punto (si existe) es decimal: se deja tal cual.
+    return float(s)
+
+
 def get_bcv():
     try:
         response = requests.get(
@@ -106,16 +131,23 @@ def get_bcv():
         )
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
-        dolar = soup.find(id="dolar").find("strong").text.strip().replace(",", ".")
-        euro = soup.find(id="euro").find("strong").text.strip().replace(",", ".")
-
-        return {
-            "usd": in_range(float(dolar)),
-            "eur": in_range(float(euro)),
-        }
     except Exception as e:
         print(f"Error BCV: {e}")
         return None
+
+    # Cada tasa se parsea por separado: si una cambia de formato, la otra no
+    # se pierde con ella (así se congeló el BCV durante tres días).
+    out = {"usd": None, "eur": None}
+    for key, node_id in (("usd", "dolar"), ("eur", "euro")):
+        try:
+            raw = soup.find(id=node_id).find("strong").text
+            out[key] = in_range(parse_bcv_number(raw))
+        except Exception as e:
+            print(f"Error BCV {key.upper()}: {e}")
+
+    if out["usd"] is None and out["eur"] is None:
+        return None
+    return out
 
 
 def get_binance():
@@ -234,8 +266,8 @@ def main():
             if best is None or d < best[0]:
                 best = (d, h)
         # Solo publicar la referencia si hay un punto razonablemente cercano a
-        # 24 h (tolerancia 3 h); si no, omitir el campo.
-        if best and best[0] <= 3 * 3600:
+        # 24 h (tolerancia REF24H_TOLERANCE); si no, omitir el campo.
+        if best and best[0] <= REF24H_TOLERANCE.total_seconds():
             rates["binance_usdt_ref_24h_value"] = best[1]["value"]
             rates["binance_usdt_ref_24h_at"] = best[1]["at"]
     except Exception as e:

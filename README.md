@@ -17,7 +17,7 @@ APK y la web de descarga.
 | `binance_history.json` | Últimos 30 valores de Binance, para la referencia de 24 h. |
 | `docs/index.html` | Landing de descarga (GitHub Pages, HTTPS forzado). |
 | `docs/privacidad.html` | Política de privacidad. |
-| `.github/workflows/scrape.yml` | Cron horario (`15 * * * *`) que ejecuta el scraper y versiona los datos. |
+| `.github/workflows/scrape.yml` | Scraper + commit de los datos. Lo dispara un reloj externo (Google Apps Script, cada hora) por `workflow_dispatch`; el `cron` `15 * * * *` queda de respaldo. |
 
 ## `data.json`
 
