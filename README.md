@@ -14,7 +14,8 @@ APK y la web de descarga.
 | `scraper.py` | Scraper **canónico** (BCV + Binance P2P). Corre en el cron de este repo. |
 | `certs/sectigo-dv-r36.pem` | Intermedio de la cadena TLS del BCV (ver abajo). |
 | `data.json` | Tasas que consume la app. Lo escribe el cron. |
-| `binance_history.json` | Últimos 30 valores de Binance, para la referencia de 24 h. |
+| `binance_history.json` | Historial corto de Binance (ventana de 6 días, tope 400 puntos), para la referencia de 24 h. |
+| `tests/` | Pruebas de la lógica del scraper (`python -m pytest tests -q`). |
 | `docs/index.html` | Landing de descarga (GitHub Pages, HTTPS forzado). |
 | `docs/privacidad.html` | Política de privacidad. |
 | `.github/workflows/scrape.yml` | Scraper + commit de los datos. Lo dispara un reloj externo (Google Apps Script, cada hora) por `workflow_dispatch`; quedan tres `cron` por hora (`:12`, `:32`, `:52`) como respaldo, porque GitHub descarta la mayoría de los eventos `schedule`. |

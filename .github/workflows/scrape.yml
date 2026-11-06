@@ -33,6 +33,10 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies (versiones fijadas)
         run: pip install -r requirements.txt
+      - name: Install test dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests
+        run: python -m pytest tests -q
       - name: Run scraper
         run: python scraper.py
       - name: Commit data
