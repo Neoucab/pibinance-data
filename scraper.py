@@ -96,6 +96,32 @@ def in_range(value):
     return None
 
 
+# Ventana del historial corto de Binance. Antes se guardaban "los últimos 30
+# puntos", lo que ataba la cobertura del historial a la frecuencia del cron:
+# con una corrida por hora son 30 h (justo lo necesario para la referencia de
+# 24 h), pero si el cron corre cada 20 min son 10 h y la referencia de 24 h
+# desaparecía por completo. Una ventana por tiempo cubre igual 1 corrida al día
+# que 144. El tope de puntos solo evita que el archivo crezca sin límite.
+HISTORY_WINDOW = timedelta(days=6)
+HISTORY_MAX_POINTS = 400
+
+
+def prune_history(history, now_dt):
+    """Deja solo los puntos dentro de HISTORY_WINDOW, con tope de cantidad."""
+    cutoff = now_dt - HISTORY_WINDOW
+    kept = []
+    for h in history:
+        try:
+            t = datetime.fromisoformat(str(h["at"]))
+        except Exception:
+            continue
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=CARACAS)
+        if t >= cutoff:
+            kept.append(h)
+    return kept[-HISTORY_MAX_POINTS:]
+
+
 def is_bcv_frozen_day(now_caracas):
     """Sáb/dom/lun la tasa BCV no cambia durante el día: se scrapea una sola
     vez, en la corrida de las 00:00-00:59 de Caracas (cuando el BCV publica).
@@ -235,8 +261,8 @@ def main():
         rates["bcv_usd_previous_value"] = prev["bcv_usd_previous_value"]
         rates["bcv_usd_previous_at"] = prev.get("bcv_usd_previous_at")
 
-    # Binance: valor más cercano a 24 h atrás, de un historial corto (últimos
-    # 30 puntos) guardado en binance_history.json.
+    # Binance: valor más cercano a 24 h atrás, de un historial corto guardado
+    # en binance_history.json (ventana por tiempo, ver prune_history).
     history = load_json("binance_history.json", [])
     if not isinstance(history, list):
         history = []
@@ -247,12 +273,16 @@ def main():
     ]
     if rates["binance_usdt"] is not None:
         history.append({"at": rates["updated_at"], "value": rates["binance_usdt"]})
-    history = history[-30:]
+
+    try:
+        now_dt = datetime.fromisoformat(rates["updated_at"])
+    except Exception:
+        now_dt = datetime.now(CARACAS)
+    history = prune_history(history, now_dt)
     with open("binance_history.json", "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
     try:
-        now_dt = datetime.fromisoformat(rates["updated_at"])
         target = now_dt - timedelta(hours=24)
         best = None
         for h in history:

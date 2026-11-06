@@ -2,14 +2,18 @@ name: Update Rates
 
 on:
   schedule:
-    # Respaldo, no camino principal: GitHub descarta la mayoría de los eventos
-    # `schedule` en repos públicos (medido: ~4,8 corridas/día en vez de 24, con
-    # huecos de hasta 9,8 h). El disparo real lo hace un reloj externo gratuito
-    # (Google Apps Script) con `workflow_dispatch` cada hora.
+    # GitHub descarta la mayoría de los eventos `schedule` en repos públicos
+    # (medido: ~4,8 corridas/día de 24, con huecos de hasta 9,8 h). Tres
+    # entradas por hora multiplican los intentos: sigue siendo gratis y no
+    # necesita credenciales de nadie. El disparo fiable sigue siendo el reloj
+    # externo de Google Apps Script con `workflow_dispatch` (ver README).
     # Binance P2P siempre; BCV entre mar-vie.
     # Sáb/dom/lun la tasa BCV no cambia: el scraper la actualiza una sola vez
-    # alrededor de las 00:15 Venezuela (publicación diaria del BCV).
-    - cron: '15 * * * *'
+    # dentro de la hora 00 de Venezuela (cualquiera de estos tres crons cae en
+    # esa hora).
+    - cron: '12 * * * *'
+    - cron: '32 * * * *'
+    - cron: '52 * * * *'
   workflow_dispatch:
 
 permissions:
